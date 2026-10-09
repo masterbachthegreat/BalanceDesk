@@ -268,7 +268,7 @@ function post(chatId, m) {
   c.msgs.push(msg);
   if (c.msgs.length > 250) c.msgs.splice(0, c.msgs.length - 250);
   if (live.open !== chatId && m.from !== 'me' && m.type !== 'sys') c.unread++;
-  if (live.open === chatId) renderMessages(); else renderList();
+  if (live.open === chatId) renderMessages(m.from === 'me'); else renderList();
   renderHud();
   save();
   return msg;
@@ -439,7 +439,7 @@ function msgHTML(m, chatId) {
   return `<div class="msg ${mine ? 'me' : 'them'}"><div class="bubble">${tag}<div class="text">${md(m.text)}</div>${btnsHTML(m)}<span class="meta">${nowTime(m.t)}</span></div></div>`;
 }
 
-function renderMessages() {
+function renderMessages(toBottom) {
   const id = live.open;
   const wrap = $('#messagesWrap'), box = $('#messages');
   const atBottom = wrap.scrollHeight - wrap.scrollTop - wrap.clientHeight < 80;
@@ -450,7 +450,7 @@ function renderMessages() {
   if (live.busy[id] && id !== 'mentor') html += `<div class="typing-row">${avatarHTML('mentor', 'sm')}<span class="dots"><i></i><i></i><i></i></span><span>Mentor is reviewing your reply…</span></div>`;
   box.innerHTML = html || `<div class="sys">No messages yet</div>`;
   renderHead(); renderComposer();
-  if (atBottom || true) wrap.scrollTop = wrap.scrollHeight;
+  if (atBottom || toBottom) wrap.scrollTop = wrap.scrollHeight;
 }
 
 function openChat(id) {
@@ -458,7 +458,7 @@ function openChat(id) {
   chat(id).unread = 0;
   $('#emptyState').hidden = true;
   $('#chatHead').hidden = false; $('#messagesWrap').hidden = false;
-  renderList(); renderMessages(); renderHud();
+  renderList(); renderMessages(true); renderHud();
   if (!$('#composer').hidden && !$('#input').disabled) $('#input').focus();
   save();
 }
