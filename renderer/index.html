@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+<title>Balance Desk</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="side-top">
+      <button class="icon-btn" id="menuBtn" title="Menu" aria-label="Menu">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <label class="search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+        <input id="search" type="text" placeholder="Search" autocomplete="off">
+      </label>
+    </div>
+    <div id="hud">
+      <div class="hud-row">
+        <div class="hud-cash" title="Cash"><span class="cur">€</span><span id="hudCash">0</span></div>
+        <div class="hud-streak" id="hudStreak" title="Streak of correct answers">×1.0 · 0 streak</div>
+      </div>
+      <div class="hud-rank">
+        <span id="hudRank">Trainee</span>
+        <span class="hud-xp" id="hudXp">0 / 120 XP</span>
+      </div>
+      <div class="xpbar"><i id="hudXpBar"></i></div>
+    </div>
+    <div id="chatList" role="list"></div>
+  </aside>
+
+  <main id="chat">
+    <div id="emptyState">
+      <div class="empty-card">
+        <div class="empty-mark">BD</div>
+        <p>Pick a chat to start working.<br>Customers will message you with questions.</p>
+      </div>
+    </div>
+    <header id="chatHead" hidden>
+      <div class="avatar" id="headAvatar"></div>
+      <div class="head-text">
+        <div class="head-name" id="headName"></div>
+        <div class="head-status" id="headStatus"></div>
+      </div>
+      <div class="head-chip" id="headChip" hidden></div>
+    </header>
+    <div id="messagesWrap" hidden>
+      <div id="messages"></div>
+    </div>
+    <div id="composer" hidden>
+      <button class="icon-btn" id="hintBtn" title="Buy a hint" aria-label="Hint">
+        <svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V16h5.2v-.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg>
+      </button>
+      <textarea id="input" rows="1" placeholder="Write a reply…"></textarea>
+      <button class="send-btn" id="sendBtn" title="Send (Enter)" aria-label="Send">
+        <svg viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.5-6.5L4 12z"/></svg>
+      </button>
+    </div>
+  </main>
+</div>
+
+<div id="drawerShade" hidden></div>
+<nav id="drawer" hidden>
+  <div class="drawer-head">
+    <div class="avatar big" id="drawerAvatar">YOU</div>
+    <div class="drawer-name" id="drawerName">Support Agent</div>
+    <div class="drawer-sub" id="drawerSub">Trainee</div>
+  </div>
+  <button class="drawer-item" data-open="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg>My desk &amp; stats</button>
+  <button class="drawer-item" data-open="shop"><svg viewBox="0 0 24 24"><path d="M4 7h16l-1.5 11a2 2 0 0 1-2 1.8h-9a2 2 0 0 1-2-1.8L4 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>Desk Supply shop</button>
+  <button class="drawer-item" data-open="howto"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5v.01"/></svg>How to play</button>
+  <button class="drawer-item" data-open="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings &amp; API key</button>
+  <div class="drawer-foot">Balance Desk 1.0</div>
+</nav>
+
+<div id="modalShade" hidden>
+  <div id="modal" role="dialog" aria-modal="true">
+    <button class="icon-btn modal-close" id="modalClose" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div id="toast" hidden></div>
+
+<script src="data/qlib.js"></script>
+<script src="data/core.js"></script>
+<script src="data/tpl_finance.js"></script>
+<script src="data/tpl_corp.js"></script>
+<script src="data/tpl_acc.js"></script>
+<script src="data/tpl_econ.js"></script>
+<script src="data/q_accounting.js"></script>
+<script src="data/q_mgr_audit.js"></script>
+<script src="data/q_ifrs_fa.js"></script>
+<script src="data/q_cf_val.js"></script>
+<script src="data/q_inv_fi.js"></script>
+<script src="data/q_der_bank.js"></script>
+<script src="data/q_pf_re_vc.js"></script>
+<script src="data/q_micro_beh.js"></script>
+<script src="data/q_macro_intl_pub.js"></script>
+<script src="data/q_extra_business.js"></script>
+<script src="data/q_extra_econ.js"></script>
+<script src="data/q_extra_fin.js"></script>
+<script src="data/q_scenarios.js"></script>
+<script src="data/q_basics.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

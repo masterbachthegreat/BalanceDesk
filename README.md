@@ -3,7 +3,7 @@
 A chat game that teaches finance, economics and accounting. You're a support agent; customers message you questions, the Mentor grades your reply and explains it.
 
 ## Play
-Unzip the Windows build and run `Balance Desk.exe`. Windows may show a SmartScreen warning because the app isn't signed: click **More info → Run anyway**.
+Download the Windows build zip from the [Releases page](https://github.com/masterbachthegreat/BalanceDesk/releases), unzip it and run `Balance Desk.exe`. Windows may show a SmartScreen warning because the app isn't signed: click **More info → Run anyway**.
 
 Add your OpenRouter key in **☰ → Settings & API key**. Without a key you can still play by checking your replies against the model answers yourself.
 
